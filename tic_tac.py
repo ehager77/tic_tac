@@ -9,6 +9,8 @@ row3 = [' ', ' ', ' ']
 occupied_cells = []
 
 def get_player_one():
+    player_one["name"] = ''
+    player_one["team"] = ''
     while len(player_one['name']) < 1:
         player_one['name'] = input('Hi Player One!  Please enter your name: ')
         if len(player_one['name']) > 0:
@@ -26,6 +28,7 @@ def get_player_one():
             player_two["team"] = 'x'
     
 def get_player_two():
+    player_two["name"] = ''
     while len(player_two['name']) < 1:
         player_two['name'] = input('Now, Player 2.  What is your name? ')
     print("Thanks " + player_two["name"].capitalize() + "!")
@@ -35,6 +38,7 @@ def get_player_two():
 
     if player_two["team"] == "x":
         print("Since " + player_one["name"].capitalize() + " chose O's, you are playing as X's")
+
 def goes_first():
     valid_player = False
 
@@ -53,20 +57,27 @@ def goes_first():
             
 def choose_cell(player):
     display_game()
+    print("Current Player: " + player["name"].capitalize())
     row_choice = ''
     column_choice = ''
 
     print(player['name'].capitalize() + ", make your move.")
 
-    while row_choice not in range(1,4):
+    while row_choice == '':
         print("Please enter a row number from 1 - 3...")
-        row_choice = int(input("Row: "))
+        row_choice = input("Row: ")
+        if not row_choice.isdigit() or int(row_choice) not in range(1,4):
+            print("Row selection is invalid.")
+            row_choice = ''
 
-    while column_choice not in range(1,4):
+    while column_choice == '':
         print("Please enter a column number from 1 - 3...")
-        column_choice = int(input("Column: "))
+        column_choice = input("Column: ")
+        if not column_choice.isdigit() or int(column_choice) not in range(1,4):
+            print("Column selection is invalid.")
+            column_choice = ''
 
-    if row_choice == 1 and column_choice == 1:
+    if int(row_choice) == 1 and int(column_choice) == 1:
         cell = 'top-left'
         if cell in occupied_cells:
             print("Cell occupied.  Please choose another.")
@@ -78,7 +89,7 @@ def choose_cell(player):
             player["choices"].append(cell)
             row1[0] = player["team"].capitalize()
 
-    elif row_choice == 1 and column_choice == 2:
+    elif int(row_choice) == 1 and int(column_choice) == 2:
         cell = 'top-center'
         if cell in occupied_cells:
             print("Cell occupied.  Please choose another.")
@@ -90,7 +101,7 @@ def choose_cell(player):
             player["choices"].append(cell)
             row1[1] = player["team"].capitalize()
 
-    elif row_choice == 1 and column_choice == 3:
+    elif int(row_choice) == 1 and int(column_choice) == 3:
         cell = 'top-right'
         if cell in occupied_cells:
             print("Cell occupied.  Please choose another.")
@@ -102,7 +113,7 @@ def choose_cell(player):
             player["choices"].append(cell)
             row1[2] = player["team"].capitalize()
 
-    elif row_choice == 2 and column_choice == 1:
+    elif int(row_choice) == 2 and int(column_choice) == 1:
         cell = 'center-left'
         if cell in occupied_cells:
             print("Cell occupied.  Please choose another.")
@@ -114,7 +125,7 @@ def choose_cell(player):
             player["choices"].append(cell)
             row2[0] = player["team"].capitalize()
 
-    elif row_choice == 2 and column_choice == 2:
+    elif int(row_choice) == 2 and int(column_choice) == 2:
         cell = 'center-center'
         if cell in occupied_cells:
             print("Cell occupied.  Please choose another.")
@@ -126,7 +137,7 @@ def choose_cell(player):
             player["choices"].append(cell)
             row2[1] = player["team"].capitalize()
 
-    elif row_choice == 2 and column_choice == 3:
+    elif int(row_choice) == 2 and int(column_choice) == 3:
         cell = 'center-right'
         if cell in occupied_cells:
             print("Cell occupied.  Please choose another.")
@@ -138,7 +149,7 @@ def choose_cell(player):
             player["choices"].append(cell)
             row2[2] = player["team"].capitalize()
 
-    elif row_choice == 3 and column_choice == 1:
+    elif int(row_choice) == 3 and int(column_choice) == 1:
         cell = 'bottom-left'
         if cell in occupied_cells:
             print("Cell occupied.  Please choose another.")
@@ -150,7 +161,7 @@ def choose_cell(player):
             player["choices"].append(cell)
             row3[0] = player["team"].capitalize()
 
-    elif row_choice == 3 and column_choice == 2:
+    elif int(row_choice) == 3 and int(column_choice) == 2:
         cell = 'bottom-center'
         if cell in occupied_cells:
             print("Cell occupied.  Please choose another.")
@@ -161,7 +172,7 @@ def choose_cell(player):
             player["choices"].append(cell)
             row3[1] = player["team"].capitalize()
 
-    elif row_choice == 3 and column_choice == 3:
+    elif int(row_choice) == 3 and int(column_choice) == 3:
         cell = 'bottom-right'
         if cell in occupied_cells:
             print("Cell occupied.  Please choose another.")
@@ -174,29 +185,28 @@ def choose_cell(player):
             row3[2] = player["team"].capitalize()
 
 def check_for_win(player):
-    print("Current Player: " + player["name"].capitalize())
-    if ["top-left", "center-left", "bottom-left"] in player["choices"]:
+    if "top-left" in player["choices"] and "center-left" in player["choices"] and "bottom-left" in player["choices"]:
         print(player["name"].capitalize() + " wins!")
         return True
-    elif ["top-center", "center-center", "bottom-center"] in player["choices"]:
+    elif "top-center" in player["choices"] and "center-center" in player["choices"] and "bottom-center" in player["choices"]:
         print(player["name"].capitalize() + " wins!")
         return True
-    elif ["top-right", "center-right", "bottom-right"] in player["choices"]:
+    elif "top-right" in player["choices"] and "center-right" in player["choices"] and "bottom-right" in player["choices"]:
         print(player["name"].capitalize() + " wins!")
         return True
-    elif ["top-left", "top-center", "top-right"] in player["choices"]:
+    elif "top-left" in player["choices"] and "top-center" in player["choices"] and "top-right" in player["choices"]:
         print(player["name"].capitalize() + " wins!")
         return True
-    elif ["center-left", "center-center", "center-right"] in player["choices"]:
+    elif "center-left" in player["choices"] and "center-center" in player["choices"] and "center-right" in player["choices"]:
         print(player["name"].capitalize() + " wins!")
         return True
-    elif ["bottom-left", "bottom-center", "bottom-right"] in player["choices"]:
+    elif "bottom-left" in player["choices"] and "bottom-center" in player["choices"] and "bottom-right" in player["choices"]:
         print(player["name"].capitalize() + " wins!")
         return True
-    elif ["top-left", "center-center", "bottom-right"] in player["choices"]:
+    elif "top-left" in player["choices"] and "center-center" in player["choices"] and "bottom-right" in player["choices"]:
         print(player["name"].capitalize() + " wins!")
         return True
-    elif ["top-right", "center-center", "bottom-left"] in player["choices"]:
+    elif "top-right" in player["choices"] and "center-center" in player["choices"] and "bottom-left" in player["choices"]:
         print(player["name"].capitalize() + " wins!")
         return True
     else:
@@ -219,19 +229,27 @@ def play_game():
     elif first_player == player_two:
         second_player = player_one
 
-    while not check_for_win(first_player) or not check_for_win(second_player):
+    while True:
         choose_cell(first_player)
         if check_for_win(first_player):
-            display_game()
+            display_game() 
             break
     
         choose_cell(second_player)
         if check_for_win(second_player):
-            display_game()
+            display_game() 
             break
 
 def try_again():
+    for i in range(len(row1)):
+        row1[i] = ' '
+    for i in range(len(row2)):
+        row2[i] = ' '
+    for i in range(len(row3)):
+        row3[i] = ' '
+
     play_again = ''
+
     while play_again != "y" or "n":
         play_again = input("Would you like to play again? Please enter Y or N: ").lower()
         if play_again == "y":
